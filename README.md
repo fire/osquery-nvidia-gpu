@@ -27,8 +27,19 @@ reuse it as `CUDA_VISIBLE_DEVICES`; match on `uuid`.
 
 ## osqueryd
 
-Autoload needs an executable owned by Administrators in a directory with locked-down ACLs.
-See https://osquery.readthedocs.io/en/latest/deployment/extensions/. Not set up here.
+Autoload needs an `.exe` that only Administrators can write. Checked on Windows 11 with the
+osquery 5.24.0 MSI service:
+
+1. `pip install pyinstaller`, then `python -m PyInstaller --onefile --name nvidia_gpu nvidia_gpu.py`.
+2. Copy `dist\nvidia_gpu.exe` to `C:\Program Files\osquery\extensions\`. Remove inherited ACLs and
+   own it as Administrators (see the osquery extensions page).
+3. Put its full path in `extensions\extensions.load`, and add `--disable_extensions=false`,
+   `--extensions_autoload=<path to extensions.load>` and `--extensions_timeout=10` to `osquery.flags`.
+4. Add a snapshot query to `osquery.conf`, for example
+   `{"query": "SELECT * FROM nvidia_gpu;", "interval": 60, "snapshot": true}`, then restart `osqueryd`.
+
+Rows land in `log\osqueryd.snapshots.log` under the query's name.
+https://osquery.readthedocs.io/en/latest/deployment/extensions/
 
 ## Test
 
