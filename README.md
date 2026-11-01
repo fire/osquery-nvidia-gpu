@@ -38,4 +38,6 @@ Starts `osqueryi`, attaches the extension and selects from `nvidia_gpu`. Checked
 osquery 5.24.0, osquery-python 3.1.1 and an RTX 4090. On a scoop Python, `pip install` can fail with
 WinError 448 on a scoop `current` junction; `pip install --no-warn-script-location osquery` works.
 
-Licence: MIT.
+## Licence
+
+MIT. See [LICENSE](LICENSE).
